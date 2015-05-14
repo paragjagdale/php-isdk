@@ -1,3 +1,7 @@
+#### DO NOT CLONE OR FORK FROM THIS REPOSITORY
+#### IT IS STRICTLY FOR MY USE - it will not be maintained OR supported and will only be here for a short while
+
+
 PHP iSDK
 ==================
 This SDK allows developers to easily use the Infusionsoft API with PHP
