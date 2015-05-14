@@ -1,0 +1,14 @@
+***Changelog***
+***************
+2.1.2 (Date: 03-13-2014)
+    Added Support for OAuth2
+
+1.8.5 (Date: 10-26-2013)
+    Fixed issue with running scripts using CLI
+    Fixed issue with infuDate() and UK date formatted apps
+
+1.8.3 (Date: 5-30-2013)
+    Cleaned up the SDK. Made it more readable
+    Added the ability for debug logging to a CSV
+    Added Readme
+******************************************************************************

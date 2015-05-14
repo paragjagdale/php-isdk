@@ -1,0 +1,21 @@
+{
+    "name": "infusionsoft/php-isdk",
+    "description": "The Official Infusionsoft API PHP SDK With OAuth2 Support",
+    "keywords": ["api", "infusionsoft", "marketing", "infusionsoft-api", "infusion", "php-infusionsoft-api", "OAuth2"],
+    "version": "2.1.2",
+    "license": "MIT",
+    "homepage": "https://developer.infusionsoft.com",
+    "authors": [
+        {
+            "name": "Infusionsoft",
+            "homepage": "https://developer.infusionsoft.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.2.0",
+        "ext-curl": "*"
+    },
+    "autoload": {
+        "classmap": ["src/isdk.php"]
+    }
+}
