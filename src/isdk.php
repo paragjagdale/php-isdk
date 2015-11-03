@@ -157,11 +157,29 @@ class iSDK
             $data = json_decode(trim($request));
         }
 
-        $this->setToken($data->access_token);
-        $this->setRefreshToken($data->refresh_token);
+	if(is_object($data) && isset($data->access_token) && isset($data->refresh_token)){
+		$this->setToken($data->access_token);
+		$this->setRefreshToken($data->refresh_token);
+	}else {
+		switch (true) {
+			case is_object($data) && isset($data->error_description):
+				$message = $data->error_description;
+				break;
+			case is_object($data) && !isset($data->error_description) && isset($data->error):
+				$message = ucwords(str_ireplace('_', ' ', $data->error));
+				break;
+			default:
+				$message = 'An error has occurred.';
+				break;
+		}
+		if(!empty($info['http_code'])){
+			throw new Exception($message, $info['http_code']);
+		}else{
+			throw new Exception($message);
+		}
+	}
 
         return $request;
-
     }
 
     public function authorize($code, $redirectURL = null, $clientId = null, $clientSecret = null, $grantType = 'authorization_code')
