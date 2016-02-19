@@ -307,7 +307,13 @@ class iSDK
         /* Connection verification */
         try {
             $connected = $this->dsGetSetting("Application", "enabled");
+	    if($connected === 'ERROR: 2 - [InvalidKey]Invalid Key'){
+		    throw new iSDKException("ERROR: 2 - [InvalidKey]Invalid Key");
+	    }
         } catch (iSDKException $e) {
+		if($e->getMessage() === 'ERROR: 2 - [InvalidKey]Invalid Key'){
+			throw new iSDKException("Connection Failed : ".$e->getMessage());
+		}
             throw new iSDKException("Connection Failed");
         }
         return true;
