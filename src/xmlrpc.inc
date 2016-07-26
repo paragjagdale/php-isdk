@@ -1047,7 +1047,7 @@ class xmlrpc_client
      * @return xmlrpcresp
      * @access public
      */
-    function& send($msg, $timeout = 0, $method = '')
+    function& send($msg, $timeout = 0, $method = '', $curl_url = '')
     {
         // if user deos not specify http protocol, use native method of this client
         // (i.e. method set during call to constructor)
@@ -1088,7 +1088,8 @@ class xmlrpc_client
                 $this->proxy_authtype,
                 $this->keepalive,
                 $this->key,
-                $this->keypass
+                $this->keypass,
+                $curl_url
             );
         } elseif ($method == 'http11') {
             $r =& $this->sendPayloadCURL(
@@ -1109,7 +1110,8 @@ class xmlrpc_client
                 $this->proxy_pass,
                 $this->proxy_authtype,
                 'http',
-                $this->keepalive
+                $this->keepalive,
+                $curl_url
             );
         } else {
             $r =& $this->sendPayloadHTTP10(
@@ -1124,7 +1126,8 @@ class xmlrpc_client
                 $this->proxyport,
                 $this->proxy_user,
                 $this->proxy_pass,
-                $this->proxy_authtype
+                $this->proxy_authtype,
+                $curl_url
             );
         }
 
@@ -1136,7 +1139,7 @@ class xmlrpc_client
      */
     function &sendPayloadHTTP10($msg, $server, $port, $timeout = 0,
                                 $username = '', $password = '', $authtype = 1, $proxyhost = '',
-                                $proxyport = 0, $proxyusername = '', $proxypassword = '', $proxyauthtype = 1)
+                                $proxyport = 0, $proxyusername = '', $proxypassword = '', $proxyauthtype = 1, $curl_url = '')
     {
         if ($port == 0) {
             $port = 80;
@@ -1188,7 +1191,11 @@ class xmlrpc_client
             }
             $connectserver = $proxyhost;
             $connectport = $proxyport;
-            $uri = 'http://' . $server . ':' . $port . $this->path;
+            $uri = $curl_url;
+            if(empty($uri))
+            {
+                $uri = 'http://' . $server . ':' . $port . $this->path;
+            }
             if ($proxyusername != '') {
                 if ($proxyauthtype != 1) {
                     error_log('XML-RPC: ' . __METHOD__ . ': warning. Only Basic auth to proxy is supported with HTTP 1.0');
@@ -1286,11 +1293,11 @@ class xmlrpc_client
     function &sendPayloadHTTPS($msg, $server, $port, $timeout = 0, $username = '',
                                $password = '', $authtype = 1, $cert = '', $certpass = '', $cacert = '', $cacertdir = '',
                                $proxyhost = '', $proxyport = 0, $proxyusername = '', $proxypassword = '', $proxyauthtype = 1,
-                               $keepalive = false, $key = '', $keypass = '')
+                               $keepalive = false, $key = '', $keypass = '', $curl_url = '')
     {
         $r =& $this->sendPayloadCURL($msg, $server, $port, $timeout, $username,
             $password, $authtype, $cert, $certpass, $cacert, $cacertdir, $proxyhost, $proxyport,
-            $proxyusername, $proxypassword, $proxyauthtype, 'https', $keepalive, $key, $keypass);
+            $proxyusername, $proxypassword, $proxyauthtype, 'https', $keepalive, $key, $keypass, $curl_url);
         return $r;
     }
 
@@ -1303,7 +1310,7 @@ class xmlrpc_client
     function &sendPayloadCURL($msg, $server, $port, $timeout = 0, $username = '',
                               $password = '', $authtype = 1, $cert = '', $certpass = '', $cacert = '', $cacertdir = '',
                               $proxyhost = '', $proxyport = 0, $proxyusername = '', $proxypassword = '', $proxyauthtype = 1, $method = 'https',
-                              $keepalive = false, $key = '', $keypass = '')
+                              $keepalive = false, $key = '', $keypass = '', $curl_url = '')
     {
         if (!function_exists('curl_init')) {
             $this->errstr = 'CURL unavailable on this install';
@@ -1360,7 +1367,11 @@ class xmlrpc_client
         }
 
         if (!$keepalive || !$this->xmlrpc_curl_handle) {
-            $curl = curl_init($method . '://' . $server . ':' . $port . $this->path);
+            if(empty($curl_url))
+            {
+                $curl_url = $method . '://' . $server . ':' . $port . $this->path;
+            }
+            $curl = curl_init($curl_url);
             if ($keepalive) {
                 $this->xmlrpc_curl_handle = $curl;
             }
