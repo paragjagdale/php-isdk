@@ -347,8 +347,8 @@ class iSDK
         /* Send the call */
         $now = time();
         $start = microtime();
-        $result = $this->client->send($call);
-
+        $curl_post_url = $this->postURL . '?access_token=' . $this->token;
+        $result = $this->client->send($call, 0, '', $curl_post_url);
         $stop = microtime();
         /* Check the returned value to see if it was successful and return it */
         if (!$result->faultCode()) {
