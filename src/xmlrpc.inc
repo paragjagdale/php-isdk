@@ -741,7 +741,7 @@ class xmlrpc_client
     var $method = 'http';
     var $errno;
     var $errstr;
-    var $debug = '2';
+    var $debug = 0;
     var $username = '';
     var $password = '';
     var $authtype = 1;
@@ -752,7 +752,7 @@ class xmlrpc_client
     var $key = '';
     var $keypass = '';
     var $verifypeer = true;
-    var $verifyhost = 1;
+    var $verifyhost = 2;
     var $no_multicall = false;
     var $proxy = '';
     var $proxyport = 0;
@@ -1842,7 +1842,7 @@ class xmlrpcmsg
     var $payload;
     var $methodname;
     var $params = array();
-    var $debug = '2';
+    var $debug = 0;
     var $content_type = 'text/xml';
 
     /**
