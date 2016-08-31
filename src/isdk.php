@@ -30,6 +30,7 @@ class iSDK
     protected $postURL;
     protected $token;
     protected $refreshToken;
+    var $user_agent = 'Revenue Conduit';
 
     public function __construct()
     {
@@ -87,6 +88,7 @@ class iSDK
             $this->client->return_type = "phpvals";
             $this->client->setSSLVerifyPeer(TRUE);
             $this->client->setCaCertificate((__DIR__ != '__DIR__' ? __DIR__ : dirname(__FILE__)) . '/infusionsoft.pem');
+	    $this->client->SetUserAgent($this->user_agent);
             $this->client->setDebug(0);
         } else {
             return $this->token;
@@ -247,6 +249,7 @@ class iSDK
         $this->client->return_type = "phpvals";
         $this->client->setSSLVerifyPeer(TRUE);
         $this->client->setCaCertificate((__DIR__ != '__DIR__' ? __DIR__ : dirname(__FILE__)) . '/infusionsoftoauth.pem');
+	$this->client->SetUserAgent($this->user_agent);
         $this->client->setDebug(0);
         return $token;
     }
@@ -300,6 +303,7 @@ class iSDK
         $this->client->setSSLVerifyPeer(TRUE);
         $this->client->setSSLVerifyHost(2);
         $this->client->setCaCertificate((__DIR__ != '__DIR__' ? __DIR__ : dirname(__FILE__)) . '/infusionsoft.pem');
+	$this->client->SetUserAgent($this->user_agent);
         $this->client->setDebug(0);
 
         $this->encKey = php_xmlrpc_encode($this->key);
